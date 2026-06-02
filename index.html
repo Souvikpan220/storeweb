@@ -4,9 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="theme-color" content="#07030f">
-<title>PYTOOLS — Premium Automation Tools</title>
+<title>TOOLCORD — Premium Automation Tools</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 <style>
 /* ══════════════════════════════════════
    RESET & ROOT
@@ -268,7 +269,18 @@ nav.scrolled {
   display:flex; align-items:center; gap:12px; transition:all 0.3s;
 }
 .trust-card:hover { border-color:rgba(184,77,255,0.4); transform:translateY(-4px); box-shadow:0 8px 28px rgba(184,77,255,0.1); }
-.trust-icon { font-size:1.5rem; flex-shrink:0; }
+.trust-icon {
+  width:40px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-shrink:0;
+}
+.trust-icon i { font-size:30px; }
+.crypto-icon { color:#f7931a; }
+.paypal-icon { color:#0070ba; }
+.delivery-icon { color:#ff9f43; }
+.secure-icon { color:#34d399; }
 .trust-name { font-weight:700; font-size:0.9rem; }
 .trust-sub { font-size:0.7rem; color:rgba(232,224,240,0.4); letter-spacing:1px; }
  
@@ -298,7 +310,12 @@ section { padding:90px 48px; position:relative; z-index:2; }
 }
 .feature-card:hover { transform:translateY(-8px); border-color:rgba(184,77,255,0.5); box-shadow:0 20px 55px rgba(184,77,255,0.15); }
 .feature-card:hover::before { opacity:1; }
-.fc-emoji { font-size:2.2rem; margin-bottom:18px; display:block; }
+.fc-emoji { font-size:2rem; margin-bottom:18px; display:block; }
+.fc-emoji i{font-size:34px;}
+.icon-delivery{color:#ff9f43;}
+.icon-updates{color:#60a5fa;}
+.icon-tutorials{color:#a3e635;}
+.icon-support{color:#c084fc;}
 .fc-title { font-family:'Orbitron',sans-serif; font-size:0.95rem; font-weight:700; margin-bottom:10px; }
 .fc-desc { color:rgba(232,224,240,0.55); font-size:0.9rem; line-height:1.65; }
  
@@ -575,7 +592,7 @@ footer { padding:56px 48px 28px; position:relative; z-index:2; background:rgba(7
  
 <!-- ═══ NAV ═══ -->
 <nav id="navbar">
-  <div class="logo">PYTOOLS</div>
+  <div class="logo">TOOLCORD</div>
   <ul class="nav-links" id="navLinks">
     <li><a href="#home">Home</a></li>
     <li><a href="#features">Features</a></li>
@@ -618,7 +635,7 @@ footer { padding:56px 48px 28px; position:relative; z-index:2; background:rgba(7
     <div class="hero-visual">
       <div class="hero-center-card">
         <div class="hcc-icon">⚡</div>
-        <div class="hcc-title">PYTOOLS</div>
+        <div class="hcc-title">TOOLCORD</div>
         <div class="hcc-sub">Premium Automation Suite</div>
         <div class="hcc-bar"><div class="hcc-bar-fill"></div></div>
       </div>
@@ -636,19 +653,19 @@ footer { padding:56px 48px 28px; position:relative; z-index:2; background:rgba(7
     <div class="trust-label">Payment Methods &amp; Guarantees</div>
     <div class="trust-cards">
       <div class="trust-card reveal">
-        <div class="trust-icon">💰</div>
+        <div class="trust-icon"><i class="fa-brands fa-bitcoin crypto-icon"></i></div>
         <div><div class="trust-name">Crypto</div><div class="trust-sub">Payment accepted</div></div>
       </div>
       <div class="trust-card reveal">
-        <div class="trust-icon">💳</div>
+        <div class="trust-icon"><i class="fa-brands fa-paypal paypal-icon"></i></div>
         <div><div class="trust-name">PayPal</div><div class="trust-sub">Payment accepted</div></div>
       </div>
       <div class="trust-card reveal">
-        <div class="trust-icon">⚡</div>
+        <div class="trust-icon"><i class="fa-solid fa-bolt delivery-icon"></i></div>
         <div><div class="trust-name">Instant Delivery</div><div class="trust-sub">After purchase</div></div>
       </div>
       <div class="trust-card reveal">
-        <div class="trust-icon">🔒</div>
+        <div class="trust-icon"><i class="fa-solid fa-shield-halved secure-icon"></i></div>
         <div><div class="trust-name">Secure Purchase</div><div class="trust-sub">100% protected</div></div>
       </div>
     </div>
@@ -659,26 +676,26 @@ footer { padding:56px 48px 28px; position:relative; z-index:2; background:rgba(7
 <section id="features">
   <div class="section-inner">
     <div class="section-tag reveal">Why Choose Us</div>
-    <h2 class="section-title reveal">Why Choose <span style="background:linear-gradient(135deg,var(--pink),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">PYTOOLS</span></h2>
+    <h2 class="section-title reveal">Why Choose <span style="background:linear-gradient(135deg,var(--pink),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">TOOLCORD</span></h2>
     <p class="section-sub reveal">Everything you need for a premium purchasing experience.</p>
     <div class="features-grid">
       <div class="feature-card reveal">
-        <span class="fc-emoji">⚡</span>
+        <span class="fc-emoji"><i class="fa-solid fa-bolt icon-delivery"></i></span>
         <div class="fc-title">Instant Delivery</div>
         <div class="fc-desc">Receive your product immediately after purchase. No waiting, no delays.</div>
       </div>
       <div class="feature-card reveal">
-        <span class="fc-emoji">🔄</span>
+        <span class="fc-emoji"><i class="fa-solid fa-arrows-rotate icon-updates"></i></span>
         <div class="fc-title">Free Updates</div>
         <div class="fc-desc">Future updates included whenever available. Stay ahead with the latest features.</div>
       </div>
       <div class="feature-card reveal">
-        <span class="fc-emoji">📚</span>
+        <span class="fc-emoji"><i class="fa-solid fa-book-open icon-tutorials"></i></span>
         <div class="fc-title">Tutorials Included</div>
         <div class="fc-desc">Step-by-step setup videos and guides. Get running in minutes.</div>
       </div>
       <div class="feature-card reveal">
-        <span class="fc-emoji">🛡</span>
+        <span class="fc-emoji"><i class="fa-solid fa-headset icon-support"></i></span>
         <div class="fc-title">Premium Support</div>
         <div class="fc-desc">Quick assistance through Discord support. We're always here for you.</div>
       </div>
@@ -750,7 +767,7 @@ footer { padding:56px 48px 28px; position:relative; z-index:2; background:rgba(7
   <div class="footer-neon"></div>
   <div class="footer-grid">
     <div class="footer-brand">
-      <div class="logo">PYTOOLS</div>
+      <div class="logo">TOOLCORD</div>
       <p>Premium automation tools, bots, scrapers and utilities trusted by thousands of customers worldwide.</p>
       <div class="footer-email">support@example.com</div>
     </div>
@@ -782,7 +799,7 @@ footer { padding:56px 48px 28px; position:relative; z-index:2; background:rgba(7
     </div>
   </div>
   <div class="footer-bottom">
-    <p>© 2025 PYTOOLS. All rights reserved. Built for creators &amp; businesses.</p>
+    <p>© 2025 TOOLCORD. All rights reserved. Built for creators &amp; businesses.</p>
   </div>
 </footer>
  
