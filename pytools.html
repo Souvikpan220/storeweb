@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PYTOOLS — Premium Automation Tools</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-deep: #07030f;
+  --bg-mid: #0d0418;
+  --bg-light: #14061f;
+  --pink: #ff007f;
+  --pink2: #ff2d92;
+  --purple: #b84dff;
+  --violet: #8b5cf6;
+  --glow-pink: 0 0 20px rgba(255,0,127,0.6), 0 0 40px rgba(255,0,127,0.3);
+  --glow-purple: 0 0 20px rgba(184,77,255,0.6), 0 0 40px rgba(184,77,255,0.3);
+  --glass: rgba(255,255,255,0.04);
+  --glass-border: rgba(255,255,255,0.08);
+}
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg-deep);
+  color: #e8e0f0;
+  font-family: 'Rajdhani', sans-serif;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* ── PARTICLES ── */
+#particles { position:fixed; inset:0; z-index:0; pointer-events:none; overflow:hidden; }
+.particle {
+  position:absolute;
+  border-radius:50%;
+  animation: floatParticle linear infinite;
+  opacity:0;
+}
+@keyframes floatParticle {
+  0%   { transform: translateY(100vh) scale(0); opacity:0; }
+  10%  { opacity:1; }
+  90%  { opacity:1; }
+  100% { transform: translateY(-10vh) scale(1); opacity:0; }
+}
+
+/* ── NOISE OVERLAY ── */
+body::before {
+  content:'';
+  position:fixed;
+  inset:0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events:none;
+  z-index:1;
+  opacity:0.5;
+}
+
+/* ── GRID BG ── */
+body::after {
+  content:'';
+  position:fixed;
+  inset:0;
+  background-image:
+    linear-gradient(rgba(184,77,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(184,77,255,0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events:none;
+  z-index:1;
+}
+
+/* ── NAV ── */
+nav {
+  position:fixed; top:0; left:0; right:0; z-index:1000;
+  display:flex; align-items:center; justify-content:space-between;
+  padding: 18px 48px;
+  background: rgba(7,3,15,0.4);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--glass-border);
+  transition: background 0.3s, box-shadow 0.3s;
+}
+nav.scrolled {
+  background: rgba(7,3,15,0.85);
+  box-shadow: 0 4px 40px rgba(184,77,255,0.15);
+}
+
+.logo {
+  font-family: 'Orbitron', sans-serif;
+  font-weight:900; font-size:1.5rem; letter-spacing:3px;
+  background: linear-gradient(135deg, var(--pink), var(--purple));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  text-shadow: none;
+  filter: drop-shadow(0 0 12px rgba(255,0,127,0.5));
+}
+
+.nav-links { display:flex; gap:36px; list-style:none; }
+.nav-links a {
+  color: rgba(232,224,240,0.75);
+  text-decoration:none; font-size:0.95rem; font-weight:500;
+  letter-spacing:1px; text-transform:uppercase;
+  transition: color 0.3s;
+  position:relative;
+}
+.nav-links a::after {
+  content:''; position:absolute; bottom:-4px; left:0; right:0; height:1px;
+  background: linear-gradient(90deg, var(--pink), var(--purple));
+  transform: scaleX(0); transition: transform 0.3s;
+}
+.nav-links a:hover { color:#fff; }
+.nav-links a:hover::after { transform: scaleX(1); }
+
+.btn-support {
+  padding: 10px 24px;
+  background: transparent;
+  border: 1px solid var(--pink);
+  color: var(--pink);
+  font-family:'Rajdhani', sans-serif; font-weight:600; font-size:0.9rem;
+  letter-spacing:2px; text-transform:uppercase;
+  text-decoration:none;
+  border-radius:4px;
+  transition: all 0.3s;
+  box-shadow: 0 0 12px rgba(255,0,127,0.2);
+}
+.btn-support:hover {
+  background: var(--pink);
+  color:#fff;
+  box-shadow: var(--glow-pink);
+}
+
+.hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; }
+.hamburger span { display:block; width:24px; height:2px; background:#e8e0f0; transition:all 0.3s; }
+
+/* ── HERO ── */
+#home {
+  min-height: 100vh;
+  display:flex; align-items:center;
+  padding: 120px 48px 80px;
+  position:relative; z-index:2;
+  overflow:hidden;
+}
+
+.hero-inner {
+  max-width:1300px; margin:0 auto; width:100%;
+  display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:center;
+}
+
+.hero-badge {
+  display:inline-flex; align-items:center; gap:8px;
+  padding: 8px 18px;
+  background: rgba(255,0,127,0.1);
+  border: 1px solid rgba(255,0,127,0.3);
+  border-radius:100px;
+  font-size:0.85rem; font-weight:600; letter-spacing:1px;
+  color: var(--pink2);
+  margin-bottom:28px;
+  animation: fadeSlideUp 0.8s ease both;
+}
+
+.hero-title {
+  font-family:'Orbitron', sans-serif;
+  font-size: clamp(2.2rem, 4vw, 3.6rem);
+  font-weight:900; line-height:1.1;
+  margin-bottom:24px;
+  animation: fadeSlideUp 0.8s ease 0.1s both;
+}
+.hero-title span {
+  background: linear-gradient(135deg, var(--pink), var(--purple), #60a5fa);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  filter: drop-shadow(0 0 20px rgba(184,77,255,0.4));
+}
+
+.hero-desc {
+  color: rgba(232,224,240,0.65);
+  font-size:1.15rem; line-height:1.7; max-width:480px;
+  margin-bottom:40px;
+  animation: fadeSlideUp 0.8s ease 0.2s both;
+}
+
+.hero-stats {
+  display:flex; gap:20px; flex-wrap:wrap;
+  margin-bottom:44px;
+  animation: fadeSlideUp 0.8s ease 0.3s both;
+}
+.stat-card {
+  padding: 16px 24px;
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-radius:12px;
+  backdrop-filter:blur(10px);
+  text-align:center;
+  flex:1; min-width:130px;
+  transition: border-color 0.3s, transform 0.3s;
+}
+.stat-card:hover {
+  border-color: rgba(184,77,255,0.4);
+  transform: translateY(-4px);
+}
+.stat-num {
+  font-family:'Orbitron', sans-serif;
+  font-size:1.4rem; font-weight:700;
+  background: linear-gradient(135deg, var(--pink), var(--purple));
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+}
+.stat-label { font-size:0.78rem; color:rgba(232,224,240,0.5); letter-spacing:1px; text-transform:uppercase; margin-top:4px; }
+
+.hero-btns {
+  display:flex; gap:16px; flex-wrap:wrap;
+  animation: fadeSlideUp 0.8s ease 0.4s both;
+}
+.btn-primary {
+  padding: 14px 36px;
+  background: linear-gradient(135deg, var(--pink), var(--purple));
+  color:#fff; border:none; border-radius:6px;
+  font-family:'Rajdhani',sans-serif; font-weight:700; font-size:1rem;
+  letter-spacing:2px; text-transform:uppercase;
+  text-decoration:none; cursor:pointer;
+  transition: all 0.3s;
+  box-shadow: 0 8px 30px rgba(255,0,127,0.3);
+}
+.btn-primary:hover {
+  transform:translateY(-3px);
+  box-shadow: var(--glow-pink), 0 12px 40px rgba(255,0,127,0.4);
+}
+.btn-secondary {
+  padding: 14px 36px;
+  background: transparent;
+  color: rgba(232,224,240,0.85);
+  border: 1px solid rgba(232,224,240,0.2);
+  border-radius:6px;
+  font-family:'Rajdhani',sans-serif; font-weight:600; font-size:1rem;
+  letter-spacing:2px; text-transform:uppercase;
+  text-decoration:none; cursor:pointer;
+  transition:all 0.3s;
+}
+.btn-secondary:hover {
+  border-color: var(--purple);
+  color:#fff;
+  box-shadow: var(--glow-purple);
+}
+
+/* ── HERO RIGHT ── */
+.hero-visual { position:relative; display:flex; align-items:center; justify-content:center; height:500px; }
+
+.hero-center-card {
+  width:260px; padding:28px;
+  background: rgba(20,6,31,0.7);
+  border: 1px solid rgba(184,77,255,0.4);
+  border-radius:20px;
+  backdrop-filter:blur(20px);
+  box-shadow: 0 0 60px rgba(184,77,255,0.2), inset 0 0 40px rgba(184,77,255,0.05);
+  text-align:center; z-index:5; position:relative;
+  animation: heroFloat 4s ease-in-out infinite;
+}
+.hcc-icon { font-size:3rem; margin-bottom:12px; }
+.hcc-title { font-family:'Orbitron',sans-serif; font-size:1rem; font-weight:700; color:#fff; margin-bottom:8px; }
+.hcc-sub { font-size:0.8rem; color:rgba(232,224,240,0.5); }
+.hcc-bar {
+  width:100%; height:4px; background:rgba(255,255,255,0.08); border-radius:2px; margin-top:16px; overflow:hidden;
+}
+.hcc-bar-fill {
+  height:100%; background:linear-gradient(90deg,var(--pink),var(--purple));
+  border-radius:2px; width:78%; animation: barPulse 2s ease-in-out infinite;
+}
+@keyframes barPulse { 0%,100%{opacity:1} 50%{opacity:0.6} }
+
+.float-card {
+  position:absolute;
+  padding: 12px 18px;
+  background: rgba(13,4,24,0.8);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius:12px;
+  backdrop-filter:blur(12px);
+  font-size:0.8rem; font-weight:600; letter-spacing:0.5px;
+  display:flex; align-items:center; gap:8px;
+  white-space:nowrap; z-index:10;
+}
+.float-card .fc-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+
+.fc1 { top:40px; right:-20px; animation: float1 3.5s ease-in-out infinite; border-color:rgba(255,0,127,0.3); box-shadow:0 0 20px rgba(255,0,127,0.1); }
+.fc1 .fc-dot { background:var(--pink); box-shadow:0 0 8px var(--pink); }
+.fc2 { top:140px; left:-30px; animation: float2 4s ease-in-out infinite; border-color:rgba(184,77,255,0.3); box-shadow:0 0 20px rgba(184,77,255,0.1); }
+.fc2 .fc-dot { background:var(--purple); box-shadow:0 0 8px var(--purple); }
+.fc3 { bottom:140px; right:-40px; animation: float3 3.8s ease-in-out infinite; border-color:rgba(96,165,250,0.3); box-shadow:0 0 20px rgba(96,165,250,0.1); }
+.fc3 .fc-dot { background:#60a5fa; box-shadow:0 0 8px #60a5fa; }
+.fc4 { bottom:60px; left:-20px; animation: float4 4.2s ease-in-out infinite; border-color:rgba(52,211,153,0.3); box-shadow:0 0 20px rgba(52,211,153,0.1); }
+.fc4 .fc-dot { background:#34d399; box-shadow:0 0 8px #34d399; }
+
+@keyframes heroFloat { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-18px)} }
+@keyframes float1 { 0%,100%{transform:translate(0,0) rotate(0deg)} 50%{transform:translate(6px,-10px) rotate(2deg)} }
+@keyframes float2 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-8px,12px)} }
+@keyframes float3 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(10px,-8px)} }
+@keyframes float4 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-6px,10px)} }
+
+/* ── TRUST BAR ── */
+#trust {
+  padding: 48px;
+  position:relative; z-index:2;
+  border-top: 1px solid var(--glass-border);
+  border-bottom: 1px solid var(--glass-border);
+  background: rgba(13,4,24,0.5);
+}
+.trust-inner { max-width:1300px; margin:0 auto; }
+.trust-label {
+  text-align:center; font-size:0.8rem; letter-spacing:3px;
+  text-transform:uppercase; color:rgba(232,224,240,0.4);
+  margin-bottom:28px;
+}
+.trust-cards { display:flex; gap:16px; justify-content:center; flex-wrap:wrap; }
+.trust-card {
+  padding:20px 32px;
+  background:var(--glass);
+  border:1px solid var(--glass-border);
+  border-radius:12px; backdrop-filter:blur(10px);
+  display:flex; align-items:center; gap:12px;
+  transition:all 0.3s; min-width:170px;
+}
+.trust-card:hover {
+  border-color:rgba(184,77,255,0.4);
+  transform:translateY(-4px);
+  box-shadow:0 8px 30px rgba(184,77,255,0.1);
+}
+.trust-icon { font-size:1.6rem; }
+.trust-name { font-weight:700; font-size:0.95rem; }
+.trust-sub { font-size:0.72rem; color:rgba(232,224,240,0.4); letter-spacing:1px; }
+
+/* ── SECTIONS COMMON ── */
+section { padding:100px 48px; position:relative; z-index:2; }
+.section-tag {
+  font-size:0.75rem; letter-spacing:3px; text-transform:uppercase;
+  color:var(--pink); font-weight:600; margin-bottom:12px;
+}
+.section-title {
+  font-family:'Orbitron',sans-serif; font-size:clamp(1.8rem,3vw,2.6rem);
+  font-weight:700; margin-bottom:16px; line-height:1.2;
+}
+.section-sub {
+  color:rgba(232,224,240,0.55); font-size:1.05rem; max-width:520px;
+  line-height:1.7; margin-bottom:60px;
+}
+.section-inner { max-width:1300px; margin:0 auto; }
+
+/* ── WHY CHOOSE ── */
+#features { background: linear-gradient(180deg, transparent, rgba(13,4,24,0.4), transparent); }
+.features-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:20px; }
+.feature-card {
+  padding:36px 28px;
+  background:var(--glass);
+  border:1px solid var(--glass-border);
+  border-radius:16px; backdrop-filter:blur(10px);
+  transition:all 0.4s;
+  position:relative; overflow:hidden;
+}
+.feature-card::before {
+  content:''; position:absolute; inset:0;
+  background:radial-gradient(circle at 50% 0%, rgba(184,77,255,0.1), transparent 70%);
+  opacity:0; transition:opacity 0.4s;
+}
+.feature-card:hover { transform:translateY(-8px) rotateX(3deg); border-color:rgba(184,77,255,0.5); box-shadow:0 20px 60px rgba(184,77,255,0.15); }
+.feature-card:hover::before { opacity:1; }
+.fc-emoji { font-size:2.4rem; margin-bottom:20px; display:block; }
+.fc-title { font-family:'Orbitron',sans-serif; font-size:1rem; font-weight:700; margin-bottom:12px; }
+.fc-desc { color:rgba(232,224,240,0.55); font-size:0.92rem; line-height:1.65; }
+
+/* ── PRODUCTS ── */
+#products {}
+.products-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:20px; }
+.product-card {
+  background:var(--glass);
+  border:1px solid var(--glass-border);
+  border-radius:16px; overflow:hidden;
+  position:relative; transition:all 0.4s;
+}
+.product-card:hover { transform:translateY(-8px); border-color:rgba(255,0,127,0.4); box-shadow:0 20px 60px rgba(255,0,127,0.15); }
+.product-img {
+  width:100%; height:180px; object-fit:cover;
+  display:flex; align-items:center; justify-content:center;
+  font-size:3.5rem;
+  position:relative; overflow:hidden;
+}
+.product-img-bg {
+  width:100%; height:180px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:3.5rem; position:relative;
+  transition:transform 0.4s;
+}
+.product-card:hover .product-img-bg { transform:scale(1.08); }
+
+.product-overlay {
+  position:absolute; inset:0;
+  background:rgba(7,3,15,0.92);
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px;
+  opacity:0; transition:opacity 0.3s;
+}
+.product-card:hover .product-overlay { opacity:1; }
+.overlay-btn {
+  padding:10px 28px; width:160px; text-align:center;
+  border-radius:6px; font-family:'Rajdhani',sans-serif;
+  font-weight:700; font-size:0.9rem; letter-spacing:1.5px;
+  text-transform:uppercase; text-decoration:none; cursor:pointer;
+  transition:all 0.3s;
+}
+.overlay-btn-primary {
+  background:linear-gradient(135deg,var(--pink),var(--purple));
+  color:#fff; border:none;
+  box-shadow:0 4px 20px rgba(255,0,127,0.4);
+}
+.overlay-btn-primary:hover { box-shadow: var(--glow-pink); transform:translateY(-2px); }
+.overlay-btn-secondary {
+  background:transparent; color:rgba(232,224,240,0.8);
+  border:1px solid rgba(232,224,240,0.2);
+}
+.overlay-btn-secondary:hover { border-color:var(--purple); color:#fff; }
+
+.product-info { padding:20px; }
+.product-name { font-family:'Orbitron',sans-serif; font-size:0.9rem; font-weight:700; margin-bottom:8px; }
+.product-desc { color:rgba(232,224,240,0.5); font-size:0.82rem; line-height:1.5; margin-bottom:14px; }
+.product-footer { display:flex; align-items:center; justify-content:space-between; }
+.product-price {
+  font-family:'Space Mono',monospace; font-size:1rem; font-weight:700;
+  background:linear-gradient(135deg,var(--pink),var(--purple));
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+}
+.product-badge {
+  font-size:0.68rem; padding:4px 10px; border-radius:100px;
+  background:rgba(184,77,255,0.15); border:1px solid rgba(184,77,255,0.3);
+  color:var(--purple); letter-spacing:1px; text-transform:uppercase; font-weight:600;
+}
+
+/* ── FEEDBACK ── */
+#feedbacks { background:linear-gradient(180deg,transparent,rgba(13,4,24,0.5),transparent); }
+.feedback-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; }
+.feedback-card {
+  padding:32px;
+  background:var(--glass);
+  border:1px solid var(--glass-border);
+  border-radius:16px; backdrop-filter:blur(10px);
+  transition:all 0.4s;
+}
+.feedback-card:hover { border-color:rgba(184,77,255,0.4); transform:translateY(-6px); box-shadow:0 20px 50px rgba(184,77,255,0.1); }
+.stars { color:#fbbf24; font-size:1.1rem; margin-bottom:18px; letter-spacing:2px; }
+.feedback-text { color:rgba(232,224,240,0.75); font-size:1rem; line-height:1.7; margin-bottom:24px; font-style:italic; }
+.feedback-author { display:flex; align-items:center; gap:12px; }
+.feedback-avatar {
+  width:40px; height:40px; border-radius:50%;
+  background:linear-gradient(135deg,var(--pink),var(--purple));
+  display:flex; align-items:center; justify-content:center;
+  font-weight:700; font-size:0.9rem;
+}
+.feedback-name { font-weight:700; font-size:0.9rem; }
+.feedback-tag { font-size:0.72rem; color:rgba(232,224,240,0.4); letter-spacing:1px; }
+
+/* ── CTA ── */
+#cta {
+  text-align:center;
+  background: radial-gradient(ellipse at 50% 50%, rgba(184,77,255,0.12), transparent 70%);
+  border-top: 1px solid var(--glass-border);
+  border-bottom: 1px solid var(--glass-border);
+}
+.cta-glow {
+  position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+  width:600px; height:300px;
+  background:radial-gradient(ellipse, rgba(255,0,127,0.12), transparent 70%);
+  pointer-events:none; z-index:0;
+}
+#cta .section-inner { position:relative; z-index:1; }
+.cta-title {
+  font-family:'Orbitron',sans-serif; font-size:clamp(2rem,4vw,3rem); font-weight:900;
+  margin-bottom:20px; line-height:1.2;
+  background:linear-gradient(135deg,#fff,rgba(232,224,240,0.7));
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+}
+.cta-sub { color:rgba(232,224,240,0.55); font-size:1.1rem; max-width:480px; margin:0 auto 40px; line-height:1.7; }
+.cta-btns { display:flex; gap:16px; justify-content:center; flex-wrap:wrap; }
+
+/* ── FOOTER ── */
+footer {
+  padding:64px 48px 32px;
+  position:relative; z-index:2;
+  background:rgba(7,3,15,0.8);
+}
+.footer-neon {
+  width:100%; height:1px;
+  background:linear-gradient(90deg,transparent,var(--pink),var(--purple),transparent);
+  margin-bottom:48px;
+  box-shadow:0 0 20px rgba(184,77,255,0.4);
+}
+.footer-grid { max-width:1300px; margin:0 auto; display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:48px; margin-bottom:48px; }
+.footer-brand .logo { font-size:1.3rem; display:inline-block; margin-bottom:16px; }
+.footer-brand p { color:rgba(232,224,240,0.45); font-size:0.9rem; line-height:1.7; max-width:240px; }
+.footer-col-title { font-family:'Orbitron',sans-serif; font-size:0.8rem; letter-spacing:2px; text-transform:uppercase; color:rgba(232,224,240,0.6); margin-bottom:20px; }
+.footer-links { list-style:none; display:flex; flex-direction:column; gap:10px; }
+.footer-links a { color:rgba(232,224,240,0.5); text-decoration:none; font-size:0.9rem; transition:color 0.3s; }
+.footer-links a:hover { color:var(--pink); }
+.social-links { display:flex; gap:10px; flex-wrap:wrap; }
+.social-link {
+  width:36px; height:36px; border-radius:8px;
+  background:var(--glass); border:1px solid var(--glass-border);
+  display:flex; align-items:center; justify-content:center;
+  text-decoration:none; font-size:1rem; transition:all 0.3s;
+}
+.social-link:hover { border-color:var(--purple); box-shadow:0 0 12px rgba(184,77,255,0.3); transform:translateY(-3px); }
+.footer-bottom { max-width:1300px; margin:0 auto; text-align:center; padding-top:24px; border-top:1px solid var(--glass-border); }
+.footer-bottom p { color:rgba(232,224,240,0.3); font-size:0.82rem; }
+
+/* ── ANIMATIONS ── */
+@keyframes fadeSlideUp {
+  from { opacity:0; transform:translateY(24px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+
+.reveal {
+  opacity:0; transform:translateY(40px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal.visible { opacity:1; transform:translateY(0); }
+
+/* ── MOBILE NAV ── */
+@media(max-width:960px) {
+  nav { padding:16px 24px; }
+  .nav-links { display:none; position:fixed; top:64px; left:0; right:0; bottom:0; background:rgba(7,3,15,0.97); flex-direction:column; align-items:center; justify-content:center; gap:32px; z-index:999; }
+  .nav-links.open { display:flex; }
+  .hamburger { display:flex; }
+  .hero-inner { grid-template-columns:1fr; }
+  .hero-visual { display:none; }
+  #home { padding:100px 24px 60px; }
+  .features-grid { grid-template-columns:repeat(2,1fr); }
+  .products-grid { grid-template-columns:repeat(2,1fr); }
+  .feedback-grid { grid-template-columns:1fr; }
+  .footer-grid { grid-template-columns:1fr 1fr; }
+  section { padding:70px 24px; }
+  #trust { padding:40px 24px; }
+  footer { padding:48px 24px 24px; }
+}
+@media(max-width:600px) {
+  .features-grid { grid-template-columns:1fr; }
+  .products-grid { grid-template-columns:1fr; }
+  .footer-grid { grid-template-columns:1fr; }
+  .trust-cards { flex-direction:column; align-items:stretch; }
+  .hero-stats { flex-direction:column; }
+  nav { padding:14px 20px; }
+}
+</style>
+</head>
+<body>
+
+<div id="particles"></div>
+
+<!-- NAV -->
+<nav id="navbar">
+  <div class="logo">PYTOOLS</div>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#home">Home</a></li>
+    <li><a href="#features">Features</a></li>
+    <li><a href="#products">Products</a></li>
+    <li><a href="#feedbacks">Feedbacks</a></li>
+  </ul>
+  <a class="btn-support" href="https://discord.gg/YOURINVITE" target="_blank">Support</a>
+  <div class="hamburger" id="hamburger" onclick="toggleNav()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="home">
+  <div class="hero-inner">
+    <div class="hero-left">
+      <div class="hero-badge">🔥 Premium Digital Products</div>
+      <h1 class="hero-title">Premium <span>Automation Tools</span><br>For Creators &amp; Businesses</h1>
+      <p class="hero-desc">High quality automation tools, bots, scrapers and utilities trusted by thousands of customers.</p>
+      <div class="hero-stats">
+        <div class="stat-card">
+          <div class="stat-num">5,000+</div>
+          <div class="stat-label">Customers</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">15,000+</div>
+          <div class="stat-label">Products Sold</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">4.9★</div>
+          <div class="stat-label">Rating</div>
+        </div>
+      </div>
+      <div class="hero-btns">
+        <a href="#products" class="btn-primary">Browse Tools</a>
+        <a href="#feedbacks" class="btn-secondary">Check Feedbacks</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-center-card">
+        <div class="hcc-icon">⚡</div>
+        <div class="hcc-title">PYTOOLS</div>
+        <div class="hcc-sub">Premium Automation Suite</div>
+        <div class="hcc-bar"><div class="hcc-bar-fill"></div></div>
+      </div>
+      <div class="float-card fc1"><div class="fc-dot"></div>Instant Delivery</div>
+      <div class="float-card fc2"><div class="fc-dot"></div>Lifetime Updates</div>
+      <div class="float-card fc3"><div class="fc-dot"></div>Secure Payments</div>
+      <div class="float-card fc4"><div class="fc-dot"></div>Premium Support</div>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST BAR -->
+<div id="trust">
+  <div class="trust-inner">
+    <div class="trust-label">Payment Methods &amp; Guarantees</div>
+    <div class="trust-cards">
+      <div class="trust-card reveal">
+        <div class="trust-icon">💰</div>
+        <div><div class="trust-name">Crypto</div><div class="trust-sub">Payment accepted</div></div>
+      </div>
+      <div class="trust-card reveal">
+        <div class="trust-icon">💳</div>
+        <div><div class="trust-name">PayPal</div><div class="trust-sub">Payment accepted</div></div>
+      </div>
+      <div class="trust-card reveal">
+        <div class="trust-icon">⚡</div>
+        <div><div class="trust-name">Instant Delivery</div><div class="trust-sub">After purchase</div></div>
+      </div>
+      <div class="trust-card reveal">
+        <div class="trust-icon">🔒</div>
+        <div><div class="trust-name">Secure Purchase</div><div class="trust-sub">100% protected</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- WHY CHOOSE -->
+<section id="features">
+  <div class="section-inner">
+    <div class="section-tag reveal">Why Choose Us</div>
+    <h2 class="section-title reveal">Why Choose <span style="background:linear-gradient(135deg,var(--pink),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">PYTOOLS</span></h2>
+    <p class="section-sub reveal">Everything you need for a premium purchasing experience.</p>
+    <div class="features-grid">
+      <div class="feature-card reveal">
+        <span class="fc-emoji">⚡</span>
+        <div class="fc-title">Instant Delivery</div>
+        <div class="fc-desc">Receive your product immediately after purchase. No waiting, no delays.</div>
+      </div>
+      <div class="feature-card reveal">
+        <span class="fc-emoji">🔄</span>
+        <div class="fc-title">Free Updates</div>
+        <div class="fc-desc">Future updates included whenever available. Stay ahead with the latest features.</div>
+      </div>
+      <div class="feature-card reveal">
+        <span class="fc-emoji">📚</span>
+        <div class="fc-title">Tutorials Included</div>
+        <div class="fc-desc">Step-by-step setup videos and guides. Get running in minutes.</div>
+      </div>
+      <div class="feature-card reveal">
+        <span class="fc-emoji">🛡</span>
+        <div class="fc-title">Premium Support</div>
+        <div class="fc-desc">Quick assistance through Discord support. We're always here for you.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCTS -->
+<section id="products">
+  <div class="section-inner">
+    <div class="section-tag reveal">Featured Tools</div>
+    <h2 class="section-title reveal">Our <span style="background:linear-gradient(135deg,var(--pink),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Best Sellers</span></h2>
+    <p class="section-sub reveal">Hand-picked premium tools built to automate, scale, and grow.</p>
+    <div class="products-grid" id="productGrid"></div>
+  </div>
+</section>
+
+<!-- FEEDBACK -->
+<section id="feedbacks">
+  <div class="section-inner">
+    <div class="section-tag reveal">Testimonials</div>
+    <h2 class="section-title reveal">Customer <span style="background:linear-gradient(135deg,var(--pink),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Feedback</span></h2>
+    <p class="section-sub reveal">Trusted by thousands of satisfied customers worldwide.</p>
+    <div class="feedback-grid">
+      <div class="feedback-card reveal">
+        <div class="stars">★★★★★</div>
+        <p class="feedback-text">"Fast delivery and great support. The TikTok Booster doubled my reach in the first week. Absolutely worth every penny."</p>
+        <div class="feedback-author">
+          <div class="feedback-avatar">AK</div>
+          <div><div class="feedback-name">Alex K.</div><div class="feedback-tag">✓ Verified Customer</div></div>
+        </div>
+      </div>
+      <div class="feedback-card reveal">
+        <div class="stars">★★★★★</div>
+        <p class="feedback-text">"The Discord bot is insane. Setup was super easy with the tutorial included, and support on Discord answered my question in under 10 minutes."</p>
+        <div class="feedback-author">
+          <div class="feedback-avatar">MR</div>
+          <div><div class="feedback-name">Marcus R.</div><div class="feedback-tag">✓ Verified Customer</div></div>
+        </div>
+      </div>
+      <div class="feedback-card reveal">
+        <div class="stars">★★★★★</div>
+        <p class="feedback-text">"Bought the Scraper Suite and it saved me 20+ hours a week. The free updates keep it working even after platform changes. Incredible value."</p>
+        <div class="feedback-author">
+          <div class="feedback-avatar">SL</div>
+          <div><div class="feedback-name">Sofia L.</div><div class="feedback-tag">✓ Verified Customer</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="cta">
+  <div class="cta-glow"></div>
+  <div class="section-inner" style="text-align:center">
+    <div class="section-tag reveal" style="justify-content:center;display:block">Get Started Today</div>
+    <h2 class="cta-title reveal">Ready To Grow Faster?</h2>
+    <p class="cta-sub reveal">Get access to premium tools trusted by thousands of users.</p>
+    <div class="cta-btns reveal">
+      <a href="#products" class="btn-primary">Browse Products</a>
+      <a href="https://discord.gg/YOURINVITE" target="_blank" class="btn-secondary">Join Discord</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-neon"></div>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="logo">PYTOOLS</div>
+      <p>Premium automation tools, bots, scrapers and utilities trusted by thousands of customers worldwide.</p>
+      <br>
+      <div style="font-size:0.82rem;color:rgba(232,224,240,0.4);">support@example.com</div>
+    </div>
+    <div>
+      <div class="footer-col-title">Quick Links</div>
+      <ul class="footer-links">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#features">Features</a></li>
+        <li><a href="#products">Products</a></li>
+        <li><a href="#feedbacks">Feedbacks</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Social</div>
+      <div class="social-links" style="flex-direction:column;gap:8px;">
+        <a href="#" class="footer-links" style="text-decoration:none;color:rgba(232,224,240,0.5);font-size:0.9rem;transition:color 0.3s;" onmouseover="this.style.color='var(--pink)'" onmouseout="this.style.color='rgba(232,224,240,0.5)'">▶ YouTube</a>
+        <a href="https://discord.gg/YOURINVITE" target="_blank" style="text-decoration:none;color:rgba(232,224,240,0.5);font-size:0.9rem;transition:color 0.3s;" onmouseover="this.style.color='var(--pink)'" onmouseout="this.style.color='rgba(232,224,240,0.5)'">💬 Discord</a>
+        <a href="#" style="text-decoration:none;color:rgba(232,224,240,0.5);font-size:0.9rem;transition:color 0.3s;" onmouseover="this.style.color='var(--pink)'" onmouseout="this.style.color='rgba(232,224,240,0.5)'">✈ Telegram</a>
+        <a href="mailto:support@example.com" style="text-decoration:none;color:rgba(232,224,240,0.5);font-size:0.9rem;transition:color 0.3s;" onmouseover="this.style.color='var(--pink)'" onmouseout="this.style.color='rgba(232,224,240,0.5)'">✉ Email</a>
+      </div>
+    </div>
+    <div>
+      <div class="footer-col-title">Legal</div>
+      <ul class="footer-links">
+        <li><a href="#">Terms of Service</a></li>
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Refund Policy</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 PYTOOLS. All rights reserved. Built for creators &amp; businesses.</p>
+  </div>
+</footer>
+
+<script>
+// ── PARTICLES
+(function(){
+  const container = document.getElementById('particles');
+  const colors = ['rgba(255,0,127,', 'rgba(184,77,255,', 'rgba(139,92,246,', 'rgba(255,45,146,'];
+  for(let i=0;i<35;i++){
+    const p = document.createElement('div');
+    p.className='particle';
+    const size = Math.random()*3+1;
+    const color = colors[Math.floor(Math.random()*colors.length)];
+    p.style.cssText=`
+      width:${size}px;height:${size}px;
+      left:${Math.random()*100}%;
+      background:${color}${Math.random()*0.6+0.2});
+      box-shadow:0 0 ${size*3}px ${color}0.8);
+      animation-duration:${Math.random()*20+12}s;
+      animation-delay:${Math.random()*15}s;
+    `;
+    container.appendChild(p);
+  }
+})();
+
+// ── NAV SCROLL
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll',()=>{
+  navbar.classList.toggle('scrolled', window.scrollY > 40);
+});
+
+// ── HAMBURGER
+function toggleNav(){
+  document.getElementById('navLinks').classList.toggle('open');
+}
+document.querySelectorAll('.nav-links a').forEach(a=>a.addEventListener('click',()=>{
+  document.getElementById('navLinks').classList.remove('open');
+}));
+
+// ── PRODUCTS DATA
+const products = [
+  { name:'TikTok Booster', desc:'Automate engagement and grow your TikTok presence on autopilot.', price:'$29.99', emoji:'📱', gradient:'linear-gradient(135deg,#ff007f22,#b84dff22)', badge:'HOT' },
+  { name:'Discord Utility Bot', desc:'Full-featured bot for moderation, roles, and server automation.', price:'$19.99', emoji:'🤖', gradient:'linear-gradient(135deg,#5865f222,#b84dff22)', badge:'POPULAR' },
+  { name:'View Booster', desc:'Increase views organically across major platforms with smart algorithms.', price:'$24.99', emoji:'👁', gradient:'linear-gradient(135deg,#00cfff22,#b84dff22)', badge:'NEW' },
+  { name:'Scraper Suite', desc:'Extract data from any website with our powerful multi-threaded scraper.', price:'$39.99', emoji:'🕷', gradient:'linear-gradient(135deg,#ff6b0022,#ff007f22)', badge:'PRO' },
+  { name:'Auto Poster', desc:'Schedule and auto-post content across all your social media accounts.', price:'$22.99', emoji:'📤', gradient:'linear-gradient(135deg,#34d39922,#60a5fa22)', badge:'HOT' },
+  { name:'Growth Toolkit', desc:'Complete suite of growth tools bundled for maximum results.', price:'$49.99', emoji:'🚀', gradient:'linear-gradient(135deg,#ff007f22,#fbbf2422)', badge:'BUNDLE' },
+  { name:'Analytics Tool', desc:'Deep insights and tracking for your digital channels in real-time.', price:'$17.99', emoji:'📊', gradient:'linear-gradient(135deg,#8b5cf622,#60a5fa22)', badge:'NEW' },
+  { name:'Content Manager', desc:'AI-assisted content planning, scheduling, and performance tracking.', price:'$34.99', emoji:'✍', gradient:'linear-gradient(135deg,#b84dff22,#ff2d9222)', badge:'AI' },
+];
+
+const grid = document.getElementById('productGrid');
+products.forEach(p=>{
+  const card = document.createElement('div');
+  card.className='product-card reveal';
+  card.innerHTML=`
+    <div style="position:relative;overflow:hidden;">
+      <div class="product-img-bg" style="background:${p.gradient};">${p.emoji}</div>
+      <div class="product-overlay">
+        <a href="SELLAUTH_LINK" class="overlay-btn overlay-btn-primary">Purchase Now</a>
+        <a href="#" class="overlay-btn overlay-btn-secondary">Tutorial</a>
+      </div>
+    </div>
+    <div class="product-info">
+      <div class="product-name">${p.name}</div>
+      <div class="product-desc">${p.desc}</div>
+      <div class="product-footer">
+        <div class="product-price">${p.price}</div>
+        <div class="product-badge">${p.badge}</div>
+      </div>
+    </div>
+  `;
+  grid.appendChild(card);
+});
+
+// ── SCROLL REVEAL
+const observer = new IntersectionObserver((entries)=>{
+  entries.forEach((e,i)=>{
+    if(e.isIntersecting){
+      const el = e.target;
+      const siblings = el.parentElement.querySelectorAll('.reveal');
+      let delay=0;
+      siblings.forEach((s,idx)=>{ if(s===el) delay=idx; });
+      el.style.transitionDelay = (delay*0.08)+'s';
+      el.classList.add('visible');
+      observer.unobserve(el);
+    }
+  });
+},{threshold:0.08});
+document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+</script>
+</body>
+</html>
